@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    //public or private reference
+    //data type (int, float, bool , string)
+    //every variable has a name
+    //optional value assigned
+    [SerializeField] 
+    private float _speed = 3.5f;
+ 
+    
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +23,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  //new Vector3(-5, 0, 0) * 5 * real time
-        transform.Translate(Vector3.left * 5 * Time.deltaTime);
+        transform.Translate(Vector3.left * _speed * Time.deltaTime);
     }
 }
