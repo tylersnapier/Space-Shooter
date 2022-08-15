@@ -6,7 +6,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField] 
     private float _speed = 3.5f;
-    
+    [SerializeField]
+    public GameObject _laserPrefab;
   
     void Start()
     {
@@ -24,7 +25,7 @@ public class Player : MonoBehaviour
     
         if (Input.GetKeyDown("space"))
         {
-            Debug.Log("Space Key Pressed");
+            Instantiate(_laserPrefab, transform.position, Quaternion.identity);
         }
         
     }
