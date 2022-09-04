@@ -6,13 +6,13 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 4.0f;
-    // Start is called before the first frame update
+   
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
      //move down at 4 meters per second
@@ -28,11 +28,8 @@ public class Enemy : MonoBehaviour
      }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-       //if other is Player
-       //damage the player
-       //Destroy Us
         if (other.tag == "Player")
         {
             //damage player
@@ -45,10 +42,7 @@ public class Enemy : MonoBehaviour
 
             Destroy(this.gameObject);
         }
-       //if other is laser
-       //laser
-       //destroy us
-
+      
        if (other.tag == "Laser")
        {
         Destroy(other.gameObject);
