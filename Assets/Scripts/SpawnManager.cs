@@ -17,10 +17,7 @@ public class SpawnManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     //spawn game objects every 5 seconds
     //Create a coroutine of type IEnumerator -- Yield Events
