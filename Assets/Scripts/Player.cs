@@ -9,11 +9,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
+    private GameObject _tripleShotPrefab;
+    [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
     private SpawnManager _spawnManager;
+    [SerializeField]
+    private bool _isTripleShotActive = false;
+
+    //variable for isTripleShotActive
   
     void Start()
     {
@@ -79,7 +85,22 @@ public class Player : MonoBehaviour
     {
         
             _canFire = Time.time + _fireRate;
-            Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+
+            if (_isTripleShotActive == true)
+            {
+                Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
+            }
+            else
+            {
+              Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            }
+
+            //if space key press, 
+            //if tripleshotActive is true
+                //fire 3 lasers (triple shot prefab)
+             //else fire 1 laser   
+
+            //instantiate 3 lasers (triple shot prefab)
 
     }
 
@@ -94,5 +115,19 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void TripleShotActive()
+    {
+        _isTripleShotActive = true;
+        StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    //IENumerator TripleShotPowerDownRoutine
+    //wait 5 seconds
+    //set the triple shot to false
+    IEnumerator TripleShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isTripleShotActive = false;
+    }
 }
 
