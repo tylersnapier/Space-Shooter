@@ -23,16 +23,12 @@ public class Powerup : MonoBehaviour
       
     }
 
-    //OnTriggerCollision
-    //Only be collectible by the Player (HINT: Use Tags)
-    //On collected, destroy
+   
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.tag == "Player")
         {
-            //communicate with the player script
-            //handle to the component i want
-            //assign the handle to the component
+            
             Player player = other.transform.GetComponent<Player>();
             if (player != null)
             {
