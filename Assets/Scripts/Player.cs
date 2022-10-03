@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] 
     private float _speed = 3.5f;
+    private float _speedMultiplier = 2;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -16,10 +17,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
     private SpawnManager _spawnManager;
-    [SerializeField]
+    
     private bool _isTripleShotActive = false;
+    
+    [SerializeField]
+    private bool _isSpeedBoostActive = false;
 
-    //variable for isTripleShotActive
+    
   
     void Start()
     {
@@ -52,12 +56,10 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
 
         float verticalInput = Input.GetAxis("Vertical");    
-        
-        
-        transform.Translate(Vector3.left * horizontalInput * _speed * Time.deltaTime);
 
-        transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
-
+        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+        
+       transform.Translate(direction * _speed * Time.deltaTime);
        
 
        if (transform.position.y >= 0)
@@ -79,6 +81,7 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
+       
     }
 
     void FireLaser()
@@ -95,13 +98,7 @@ public class Player : MonoBehaviour
               Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
             }
 
-            //if space key press, 
-            //if tripleshotActive is true
-                //fire 3 lasers (triple shot prefab)
-             //else fire 1 laser   
-
-            //instantiate 3 lasers (triple shot prefab)
-
+            
     }
 
     public void Damage()
@@ -121,13 +118,24 @@ public class Player : MonoBehaviour
         StartCoroutine(TripleShotPowerDownRoutine());
     }
 
-    //IENumerator TripleShotPowerDownRoutine
-    //wait 5 seconds
-    //set the triple shot to false
+ 
     IEnumerator TripleShotPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
         _isTripleShotActive = false;
+    }
+    public void SpeedBoostActive()
+    {
+        _isSpeedBoostActive = true;
+        _speed *= _speedMultiplier;
+        StartCoroutine(SpeedBoostPowerDownRoutine());
+    }
+
+    IEnumerator SpeedBoostPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _isSpeedBoostActive = false;
+        _speed /= _speedMultiplier;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
     }
 }
 
