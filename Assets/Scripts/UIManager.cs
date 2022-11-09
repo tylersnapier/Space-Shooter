@@ -6,7 +6,7 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    //handle to Text
+    
     [SerializeField]
     private TMP_Text _scoreText;
     [SerializeField]
