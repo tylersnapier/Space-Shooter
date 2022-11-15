@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
         Debug.LogError("The Animator is NULL");
        }
     }
-   
+    
  
 
    
