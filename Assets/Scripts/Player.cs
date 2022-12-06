@@ -34,8 +34,13 @@ public class Player : MonoBehaviour
     private UIManager _uiManager;
     [SerializeField]
     private AudioClip _laserSoundClip;
-    
+
     private AudioSource _audioSource;
+
+    [SerializeField]
+    private GameObject _thruster;
+    //Speed boost on Key press
+    //Return to normal speed when key released
 
 
     void Start()
@@ -57,9 +62,9 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Audio Source on the Player is NULL.");
         }
-        else 
+        else
         {
-           _audioSource.clip = _laserSoundClip; 
+            _audioSource.clip = _laserSoundClip;
         }
     }
 
@@ -143,7 +148,7 @@ public class Player : MonoBehaviour
         {
             _rightEngine.SetActive(true);
         }
-        
+
 
         _uiManager.UpdateLives(_lives);
 
@@ -193,7 +198,9 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(_score);
     }
 
-    //method to add 10 to score!
-    //Communicate with the UI to update the score
+    
+
+
+    
 }
 
