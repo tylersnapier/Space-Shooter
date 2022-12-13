@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnManager;
 
     private bool _isTripleShotActive = false;
-    private bool _isSpeedBoostActive = false;
+    
     private bool _isShieldActive = false;
 
     [SerializeField]
@@ -37,8 +37,6 @@ public class Player : MonoBehaviour
 
     private AudioSource _audioSource;
 
-    [SerializeField]
-    private GameObject _thruster;
     //Speed boost on Key press
     //Return to normal speed when key released
 
@@ -173,7 +171,7 @@ public class Player : MonoBehaviour
 
     public void SpeedBoostActive()
     {
-        _isSpeedBoostActive = true;
+        
         _speed *= _speedMultiplier;
         StartCoroutine(SpeedBoostPowerDownRoutine());
     }
@@ -181,7 +179,7 @@ public class Player : MonoBehaviour
     IEnumerator SpeedBoostPowerDownRoutine()
     {
         yield return new WaitForSeconds(5.0f);
-        _isSpeedBoostActive = false;
+       
         _speed /= _speedMultiplier;
     }
 
