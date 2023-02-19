@@ -7,6 +7,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 3.5f;
     private float _speedMultiplier = 2;
+    private float _boostAmount = 0f; //100 = full boost //each boost collected = 25
+    private float _boostPerSecond = 25f;
+    private float _boostPickupAmount = 25f;
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -19,7 +22,7 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnManager;
 
     private bool _isTripleShotActive = false;
-    private bool _isSpeedBoostActive = false;
+    
     private bool _isShieldActive = false;
 
     [SerializeField]
@@ -37,10 +40,7 @@ public class Player : MonoBehaviour
 
     private AudioSource _audioSource;
 
-    [SerializeField]
-    private GameObject _thruster;
-    //Speed boost on Key press
-    //Return to normal speed when key released
+   
 
 
     void Start()
@@ -49,6 +49,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>(); //Find the Object. Get the Component
 
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        
         _audioSource = GetComponent<AudioSource>();
         if (_spawnManager == null)
         {
@@ -109,6 +110,25 @@ public class Player : MonoBehaviour
         {
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
+
+        //Thruster
+
+
+        if (Input.GetKey(KeyCode.LeftShift) && _boostAmount > 0)
+        {
+            _boostAmount = Mathf.Clamp(_boostAmount - _boostPerSecond * Time.deltaTime, 0, 100);
+
+            transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
+
+            
+        }
+        else
+        {
+            transform.Translate(direction * _speed * Time.deltaTime);
+
+        }
+
+
     }
 
     void FireLaser()
@@ -171,19 +191,32 @@ public class Player : MonoBehaviour
         _isTripleShotActive = false;
     }
 
-    public void SpeedBoostActive()
+       
+    public void AddSpeedBoost()
     {
-        _isSpeedBoostActive = true;
-        _speed *= _speedMultiplier;
+        _boostAmount = Mathf.Clamp(_boostAmount + _boostPickupAmount, 0, 100);
+       
+        
+        /*
+        StopCoroutine(SpeedBoostPowerDownRoutine());
         StartCoroutine(SpeedBoostPowerDownRoutine());
+        */
     }
-
+    /*
     IEnumerator SpeedBoostPowerDownRoutine()
     {
-        yield return new WaitForSeconds(5.0f);
-        _isSpeedBoostActive = false;
-        _speed /= _speedMultiplier;
+        if (_isSpeedBoostActive == true)
+        {
+            yield return new WaitForSeconds(10);
+
+            _isSpeedBoostActive = false;
+            _speed /= _speedMultiplier;
+        }
+
+        
     }
+    */
+    
 
     public void ShieldActive()
     {

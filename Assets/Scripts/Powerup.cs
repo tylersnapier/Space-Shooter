@@ -23,7 +23,7 @@ public class Powerup : MonoBehaviour
       
     }
 
-   
+      
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.tag == "Player")
@@ -42,7 +42,7 @@ public class Powerup : MonoBehaviour
                     player.TripleShotActive();
                     break;
                     case 1:
-                    player.SpeedBoostActive();
+                    player.AddSpeedBoost();
                     break;
                     case 2:
                     player.ShieldActive();

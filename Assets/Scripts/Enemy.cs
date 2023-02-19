@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     private float _speed = 4.0f;
     [SerializeField]
     private GameObject _laserPrefab;
+    [SerializeField]
+    private bool _alive = true;
 
     private Player _player;
     private Animator _anim;
@@ -16,47 +18,47 @@ public class Enemy : MonoBehaviour
     private float _fireRate = 3.0f;
     private float _canFire = -1f;
 
-    
-    
+
+
     void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
         _audioSource = GetComponent<AudioSource>();
-        
+
         if (_player == null)
         {
             Debug.LogError("The Player is NULL.");
         }
-       _anim = GetComponent<Animator>();
+        _anim = GetComponent<Animator>();
 
-       if (_anim == null)
-       {
-        Debug.LogError("The Animator is NULL");
-       }
+        if (_anim == null)
+        {
+            Debug.LogError("The Animator is NULL");
+        }
     }
-    
- 
 
-   
+
+
+
     void Update()
     {
         CalculateMovement();
 
-        if (Time.time > _canFire)
+        if (Time.time > _canFire && _alive)
         {
             _fireRate = Random.Range(3f, 7f);
             _canFire = Time.time + _fireRate;
             GameObject enemyLaser = Instantiate(_laserPrefab, transform.position, Quaternion.identity);
             Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
-            
-            
+
+
             for (int i = 0; i < lasers.Length; i++)
             {
                 lasers[i].AssignEnemyLaser();
 
             }
         }
-    
+
     }
 
     void CalculateMovement()
@@ -65,15 +67,19 @@ public class Enemy : MonoBehaviour
 
 
 
-    if (transform.position.y < -5f)
-     {
-     float randomX = Random.Range(-8f, 8f);
-     transform.position = new Vector3(randomX, 7, 0);
-     }
+        if (transform.position.y < -5f)
+        {
+            float randomX = Random.Range(-8f, 8f);
+            transform.position = new Vector3(randomX, 7, 0);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (_alive == false)
+        {
+            return;
+        }
         if (other.tag == "Player")
         {
             //damage player
@@ -87,25 +93,27 @@ public class Enemy : MonoBehaviour
             _speed = 0;
             _audioSource.Play();
             Destroy(this.gameObject, 2.5f);
-            
+            _alive = false;
+
         }
-      
-       if (other.tag == "Laser")
-       {
-        if (other.transform.GetComponent<Laser>().IsEnemyLaser() == false)
+
+        if (other.tag == "Laser")
         {
-           Destroy(other.gameObject);
-            if (_player != null)
+            if (other.transform.GetComponent<Laser>().IsEnemyLaser() == false)
             {
-                _player.AddScore(10); 
-            } 
-        
-        _anim.SetTrigger("OnEnemyDeath");
-        _speed = 0;
-         _audioSource.Play();
-         Destroy(GetComponent<Collider2D>());
-        Destroy(this.gameObject, 2.5f);
-        }
+                Destroy(other.gameObject);
+                if (_player != null)
+                {
+                    _player.AddScore(10);
+                }
+
+                _anim.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                _audioSource.Play();
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.5f);
+                _alive = false;
+            }
         }
     }
 }
