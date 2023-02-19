@@ -39,10 +39,9 @@ public class Player : MonoBehaviour
     private AudioClip _laserSoundClip;
 
     private AudioSource _audioSource;
-
-   
-
-
+    
+    //Speed boost on Key press
+    //Return to normal speed when key released
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -195,8 +194,6 @@ public class Player : MonoBehaviour
     public void AddSpeedBoost()
     {
         _boostAmount = Mathf.Clamp(_boostAmount + _boostPickupAmount, 0, 100);
-       
-        
         /*
         StopCoroutine(SpeedBoostPowerDownRoutine());
         StartCoroutine(SpeedBoostPowerDownRoutine());
@@ -214,6 +211,7 @@ public class Player : MonoBehaviour
         }
 
         
+
     }
     */
     
