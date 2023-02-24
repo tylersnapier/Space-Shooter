@@ -25,8 +25,16 @@ public class Player : MonoBehaviour
     
     private bool _isShieldActive = false;
 
+    private bool _isThrusterActive = true;
+
+    private bool _isSpeedBoostVisualizerActive = false;
+
     [SerializeField]
     private GameObject _shieldVisualizer;
+    [SerializeField]
+    private GameObject _thruster;
+    [SerializeField]
+    private GameObject _speedBoostVisualizer;
 
     [SerializeField]
     private GameObject _rightEngine, _leftEngine;
@@ -112,18 +120,29 @@ public class Player : MonoBehaviour
 
         //Thruster
 
-
+        
         if (Input.GetKey(KeyCode.LeftShift) && _boostAmount > 0)
         {
             _boostAmount = Mathf.Clamp(_boostAmount - _boostPerSecond * Time.deltaTime, 0, 100);
 
             transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
 
+            _isThrusterActive = false;
+            _isSpeedBoostVisualizerActive = true;
+            _speedBoostVisualizer.SetActive(true);
+            _thruster.SetActive(false);
+
             
         }
         else
         {
             transform.Translate(direction * _speed * Time.deltaTime);
+
+            _isSpeedBoostVisualizerActive = false;
+
+            _isThrusterActive = true;
+            _speedBoostVisualizer.SetActive(false);
+            _thruster.SetActive(true);
 
         }
 
@@ -229,6 +248,7 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(_score);
     }
 
+   
     
 
 
