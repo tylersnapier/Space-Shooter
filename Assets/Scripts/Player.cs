@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -8,8 +9,11 @@ public class Player : MonoBehaviour
     private float _speed = 3.5f;
     private float _speedMultiplier = 2;
     private float _boostAmount = 0f; //100 = full boost //each boost collected = 25
-    private float _boostPerSecond = 25f;
+    private const float _boostPerSecond = 25f;
     private float _boostPickupAmount = 25f;
+    private float _boostToAdd = 0;
+    //private float _refuelSpeed = 20f;
+    
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
@@ -19,6 +23,9 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
+    /*[SerializeField]
+    private float _playerHealth = 100f;*/
+
     private SpawnManager _spawnManager;
 
     private bool _isTripleShotActive = false;
@@ -31,6 +38,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject _shieldVisualizer;
+
     [SerializeField]
     private GameObject _thruster;
     [SerializeField]
@@ -118,7 +126,21 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
 
-        //Thruster
+        //SpeedBoost
+
+        //when the speedpowerup collected store in boost gaurge
+        //boost amount increases by boostPerSecond
+        //when player uses boost decrease by boostPerSecond
+
+        //if boostToAdd > 0 then check against boost left to add
+        //implement to speed boost gauge
+        if (_boostToAdd > 0)
+        {
+            float boostAdded = _boostPerSecond * Time.deltaTime;
+            boostAdded = Mathf.Clamp(boostAdded, 0, _boostToAdd);
+            _boostToAdd -= boostAdded;
+            _boostAmount = Mathf.Clamp(boostAdded + _boostAmount, 0, 100);
+        }
 
         
         if (Input.GetKey(KeyCode.LeftShift) && _boostAmount > 0)
@@ -133,6 +155,9 @@ public class Player : MonoBehaviour
             _thruster.SetActive(false);
 
             
+            
+
+            
         }
         else
         {
@@ -145,6 +170,7 @@ public class Player : MonoBehaviour
             _thruster.SetActive(true);
 
         }
+        _uiManager.SpeedBoostGauge(_boostAmount);
 
 
     }
@@ -176,6 +202,7 @@ public class Player : MonoBehaviour
             _shieldVisualizer.SetActive(false);
             return;
         }
+
         _lives--;
 
         if (_lives == 2)
@@ -186,9 +213,9 @@ public class Player : MonoBehaviour
         {
             _rightEngine.SetActive(true);
         }
+       
 
-
-        _uiManager.UpdateLives(_lives);
+       _uiManager.UpdateLives(_lives);
 
         if (_lives < 1)
         {
@@ -196,6 +223,7 @@ public class Player : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
 
     public void TripleShotActive()
     {
@@ -212,29 +240,10 @@ public class Player : MonoBehaviour
        
     public void AddSpeedBoost()
     {
-        _boostAmount = Mathf.Clamp(_boostAmount + _boostPickupAmount, 0, 100);
-        /*
-        StopCoroutine(SpeedBoostPowerDownRoutine());
-        StartCoroutine(SpeedBoostPowerDownRoutine());
-        */
-    }
-    /*
-    IEnumerator SpeedBoostPowerDownRoutine()
-    {
-        if (_isSpeedBoostActive == true)
-        {
-            yield return new WaitForSeconds(10);
-
-            _isSpeedBoostActive = false;
-            _speed /= _speedMultiplier;
-        }
-
+        _boostToAdd = Mathf.Clamp(_boostAmount + _boostPickupAmount, 0, 100);
         
-
     }
-    */
     
-
     public void ShieldActive()
     {
         _isShieldActive = true;
@@ -242,10 +251,28 @@ public class Player : MonoBehaviour
         _shieldVisualizer.SetActive(true);
     }
 
+    public void HealthRestore()
+    {
+        if (_lives < 3)
+        {
+            _lives++;
+            _uiManager.UpdateLives(_lives);
+        }
+    }
+
     public void AddScore(int points)
     {
         _score += points;
         _uiManager.UpdateScore(_score);
+
+        if (_lives == 2)
+        {
+            _leftEngine.SetActive(false);
+        }
+        else if (_lives == 3)
+        {
+            _rightEngine.SetActive(false);
+        }
     }
 
    

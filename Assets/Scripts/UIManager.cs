@@ -17,6 +17,12 @@ public class UIManager : MonoBehaviour
     private TMP_Text _gameOverText;
     [SerializeField]
     private TMP_Text _restartText;
+    [SerializeField]
+    private Slider _speedBoostGauge;
+    [SerializeField]
+    private Slider _healthGauge;
+    
+
 
     private GameManager _gameManager;
     void Start()
@@ -24,6 +30,7 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + 0;
         _gameOverText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        _speedBoostGauge.value = 0;
 
         if (_gameManager == null)
         {
@@ -67,6 +74,24 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
     }
+
+    public void SpeedBoostGauge (float boostAmount)
+    {
+        _speedBoostGauge.value = boostAmount;
+
+        _speedBoostGauge.maxValue = 100f;
+        _speedBoostGauge.minValue = 0f;
+    }
+    
+    /*public void HealthGauge (float healthAmount)
+    {
+        _healthGauge.value = healthAmount;
+
+        _healthGauge.maxValue = 100f;
+        _healthGauge.minValue = 0f;
+    }*/
+
+   
 
     
   
