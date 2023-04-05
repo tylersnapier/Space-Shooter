@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject _shieldVisualizer;
+    private int _shieldLives = 3;
 
     [SerializeField]
     private GameObject _thruster;
@@ -153,6 +154,7 @@ public class Player : MonoBehaviour
             _isSpeedBoostVisualizerActive = true;
             _speedBoostVisualizer.SetActive(true);
             _thruster.SetActive(false);
+            
 
             
             
@@ -168,6 +170,7 @@ public class Player : MonoBehaviour
             _isThrusterActive = true;
             _speedBoostVisualizer.SetActive(false);
             _thruster.SetActive(true);
+            
 
         }
         _uiManager.SpeedBoostGauge(_boostAmount);
@@ -197,9 +200,25 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive == true)
         {
-            _isShieldActive = false;
-            //disable shield visualizer
-            _shieldVisualizer.SetActive(false);
+            _shieldLives--;
+
+            if(_shieldLives == 2)
+            {
+                _shieldVisualizer.transform.localScale = new Vector3(4, 4, 4);
+                _shieldVisualizer.GetComponent<SpriteRenderer>().material.color = Color.yellow;
+            }
+            if(_shieldLives == 1)
+            {
+                _shieldVisualizer.transform.localScale = new Vector3(3, 3, 3);
+                _shieldVisualizer.GetComponent<SpriteRenderer>().material.color = Color.red;
+            }
+            if (_shieldLives == 0)
+            {
+                _isShieldActive = false;
+                //disable shield visualizer
+                _shieldVisualizer.SetActive(false);
+                
+            }
             return;
         }
 
@@ -249,6 +268,9 @@ public class Player : MonoBehaviour
         _isShieldActive = true;
         //enable shield visualizer
         _shieldVisualizer.SetActive(true);
+        _shieldLives = 3;
+        _shieldVisualizer.transform.localScale = new Vector3(6, 6, 6);
+        _shieldVisualizer.GetComponent<SpriteRenderer>().material.color = Color.blue;
     }
 
     public void HealthRestore()
@@ -258,13 +280,6 @@ public class Player : MonoBehaviour
             _lives++;
             _uiManager.UpdateLives(_lives);
         }
-    }
-
-    public void AddScore(int points)
-    {
-        _score += points;
-        _uiManager.UpdateScore(_score);
-
         if (_lives == 2)
         {
             _leftEngine.SetActive(false);
@@ -273,6 +288,14 @@ public class Player : MonoBehaviour
         {
             _rightEngine.SetActive(false);
         }
+    }
+
+    public void AddScore(int points)
+    {
+        _score += points;
+        _uiManager.UpdateScore(_score);
+
+       
     }
 
    
