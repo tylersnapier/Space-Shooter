@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
+    private int _ammo = 15;
+    private int _maxAmmo = 15;
+    private bool _noAmmo = false;
     [SerializeField]
     private int _lives = 3;
     /*[SerializeField]
@@ -34,7 +37,7 @@ public class Player : MonoBehaviour
 
     private bool _isThrusterActive = true;
 
-    private bool _isSpeedBoostVisualizerActive = false;
+    //private bool _isSpeedBoostVisualizerActive = false;
 
     [SerializeField]
     private GameObject _shieldVisualizer;
@@ -65,6 +68,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>(); //Find the Object. Get the Component
 
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _uiManager.SetAmmoEnabled();
         
         _audioSource = GetComponent<AudioSource>();
         if (_spawnManager == null)
@@ -88,12 +92,18 @@ public class Player : MonoBehaviour
 
 
     void Update()
+        //Fire Laser
     {
         CalculateMovement();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
-            FireLaser();
+            if (_ammo > 0)
+            {
+                FireLaser();
+
+                _uiManager.UpdateAmmoDisplay(_ammo, _maxAmmo);
+            }
         }
     }
 
@@ -151,7 +161,7 @@ public class Player : MonoBehaviour
             transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
 
             _isThrusterActive = false;
-            _isSpeedBoostVisualizerActive = true;
+            //_isSpeedBoostVisualizerActive = true;
             _speedBoostVisualizer.SetActive(true);
             _thruster.SetActive(false);
             
@@ -165,7 +175,7 @@ public class Player : MonoBehaviour
         {
             transform.Translate(direction * _speed * Time.deltaTime);
 
-            _isSpeedBoostVisualizerActive = false;
+            //_isSpeedBoostVisualizerActive = false;
 
             _isThrusterActive = true;
             _speedBoostVisualizer.SetActive(false);
@@ -182,19 +192,24 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
+        
+
         if (_isTripleShotActive == true)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
         }
         else
         {
-            Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.8f, 0), Quaternion.identity);
+            Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.9f, 0), Quaternion.identity);
         }
 
         _audioSource.Play();
+        _ammo = Mathf.Max(_ammo - 1, 0);
 
         //play the laser audio clip
     }
+
+
 
     public void Damage()
     {
@@ -296,6 +311,14 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(_score);
 
        
+    }
+
+    public void AmmoRefill()
+    {
+        _ammo = _maxAmmo;
+
+        _uiManager.UpdateAmmoDisplay(_ammo, _maxAmmo);
+
     }
 
    

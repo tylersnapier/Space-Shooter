@@ -21,12 +21,15 @@ public class UIManager : MonoBehaviour
     private Slider _speedBoostGauge;
     [SerializeField]
     private Slider _healthGauge;
+    [SerializeField]
+    private TMP_Text _ammoDisplay;
     
 
 
     private GameManager _gameManager;
     void Start()
     {
+        _ammoDisplay.enabled = false;
         _scoreText.text = "Score: " + 0;
         _gameOverText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
@@ -91,8 +94,23 @@ public class UIManager : MonoBehaviour
         _healthGauge.minValue = 0f;
     }*/
 
-   
-
+   public void UpdateAmmoDisplay(int currentAmmo, int maxAmmo)
+    {
+        _ammoDisplay.text = currentAmmo + "/" + maxAmmo;
+    }
     
+    public void SetAmmoEnabled()
+    {
+        _ammoDisplay.enabled = true;
+    }
+
+    public void SetAmmoDisabled()
+    {
+        _ammoDisplay.enabled = false;
+    }
+    
+    
+    
+   
   
 }
