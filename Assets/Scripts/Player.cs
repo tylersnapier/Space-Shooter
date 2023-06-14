@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro.EditorUtilities;
 using UnityEngine;
 
@@ -13,31 +14,47 @@ public class Player : MonoBehaviour
     private float _boostPickupAmount = 25f;
     private float _boostToAdd = 0;
     //private float _refuelSpeed = 20f;
+    [SerializeField]
+    private GameObject  _reinforcementsPrefab;
+    private bool _isReinforcementsActive = false;
+    private GameObject _reinforcementsLaserPrefab;
     
     [SerializeField]
     private GameObject _laserPrefab;
     [SerializeField]
     private GameObject _tripleShotPrefab;
     [SerializeField]
+   private GameObject _hyperLaserPrefab;
+   private Vector3 _hyperLaserOffset = new Vector3(0, 5.25f, 0);
+    [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
     private int _ammo = 15;
     private int _maxAmmo = 15;
     private bool _noAmmo = false;
-    [SerializeField]
-    private int _lives = 3;
     /*[SerializeField]
-    private float _playerHealth = 100f;*/
+    private int _lives = 3;*/
+    [SerializeField]
+    private CameraShake _cameraShake;
+    [SerializeField]
+    private int _maxHealth = 100;
+    private int _currentHealth;
+    [SerializeField]
+    private HealthBar _healthBar;
+    [SerializeField]
+    private int _damageAmount = 20;
 
     private SpawnManager _spawnManager;
 
     private bool _isTripleShotActive = false;
     
     private bool _isShieldActive = false;
+   [SerializeField]
+   private bool _isHyperLaserActive = false;
 
-    private bool _isThrusterActive = true;
+    
 
-    //private bool _isSpeedBoostVisualizerActive = false;
+    
 
     [SerializeField]
     private GameObject _shieldVisualizer;
@@ -87,6 +104,20 @@ public class Player : MonoBehaviour
         {
             _audioSource.clip = _laserSoundClip;
         }
+        //HealthBar
+        _healthBar = GameObject.Find("HealthBar").GetComponent<HealthBar>();
+
+        if (_healthBar == null)
+        {
+            Debug.Log("The HealthBar is NULL");
+        }
+        else
+        {
+            _healthBar.SetMaxHealth(_maxHealth);
+        }
+
+        _currentHealth = _maxHealth;
+        _healthBar.SetMaxHealth(_maxHealth);
     }
 
 
@@ -105,6 +136,9 @@ public class Player : MonoBehaviour
                 _uiManager.UpdateAmmoDisplay(_ammo, _maxAmmo);
             }
         }
+
+          
+        
     }
 
     void CalculateMovement()
@@ -160,7 +194,7 @@ public class Player : MonoBehaviour
 
             transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
 
-            _isThrusterActive = false;
+           
             //_isSpeedBoostVisualizerActive = true;
             _speedBoostVisualizer.SetActive(true);
             _thruster.SetActive(false);
@@ -177,7 +211,7 @@ public class Player : MonoBehaviour
 
             //_isSpeedBoostVisualizerActive = false;
 
-            _isThrusterActive = true;
+           
             _speedBoostVisualizer.SetActive(false);
             _thruster.SetActive(true);
             
@@ -192,18 +226,37 @@ public class Player : MonoBehaviour
     {
         _canFire = Time.time + _fireRate;
 
-        
+
 
         if (_isTripleShotActive == true)
         {
             Instantiate(_tripleShotPrefab, transform.position, Quaternion.identity);
         }
+        /*else if (_isReinforcementsActive == true)
+        {
+            Instantiate(_reinforcementsLaserPrefab, transform.position, Quaternion.identity);
+        }*/
         else
         {
             Instantiate(_laserPrefab, transform.position + new Vector3(0, 0.9f, 0), Quaternion.identity);
         }
 
-        _audioSource.Play();
+        if (_isHyperLaserActive == true)
+        {
+            if (GameObject.Find("Hyper_Laser(Clone)") != null)
+            {
+                return;
+            }
+            else
+            {
+                GameObject _hyperLas = Instantiate(_hyperLaserPrefab, transform.position + _hyperLaserOffset, Quaternion.identity);
+                _hyperLas.transform.parent = transform;
+                Destroy(_hyperLas, 3.0f);
+            }
+                
+
+        }
+         _audioSource.Play();
         _ammo = Mathf.Max(_ammo - 1, 0);
 
         //play the laser audio clip
@@ -211,8 +264,10 @@ public class Player : MonoBehaviour
 
 
 
-    public void Damage()
-    {
+    public void Damage(int _damageAmount)
+    { 
+        _cameraShake.CameraShaking();
+
         if (_isShieldActive == true)
         {
             _shieldLives--;
@@ -236,28 +291,40 @@ public class Player : MonoBehaviour
             }
             return;
         }
+        _currentHealth -= _damageAmount;
 
-        _lives--;
+        _healthBar.UpdateHealthBar(_currentHealth, _maxHealth);
+        _cameraShake.CameraShaking();
 
-        if (_lives == 2)
-        {
-            _leftEngine.SetActive(true);
-        }
-        else if (_lives == 1)
+        if (_currentHealth <= 60)
         {
             _rightEngine.SetActive(true);
         }
-       
+        else if (_currentHealth <= 20)
+        {
+            _leftEngine.SetActive(true);
+        }
+        if (_currentHealth <= 0)
 
-       _uiManager.UpdateLives(_lives);
-
-        if (_lives < 1)
         {
             _spawnManager.OnPlayerDeath();
             Destroy(this.gameObject);
+            _uiManager.GameOverSequence();
         }
+        
+       
     }
+    public void HealthRestore(int _restoreAmount = 20)
+    {
+        _currentHealth += _restoreAmount;
 
+        if (_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+
+        _healthBar.UpdateHealthBar(_currentHealth, _maxHealth);
+    }
 
     public void TripleShotActive()
     {
@@ -287,23 +354,7 @@ public class Player : MonoBehaviour
         _shieldVisualizer.transform.localScale = new Vector3(6, 6, 6);
         _shieldVisualizer.GetComponent<SpriteRenderer>().material.color = Color.blue;
     }
-
-    public void HealthRestore()
-    {
-        if (_lives < 3)
-        {
-            _lives++;
-            _uiManager.UpdateLives(_lives);
-        }
-        if (_lives == 2)
-        {
-            _leftEngine.SetActive(false);
-        }
-        else if (_lives == 3)
-        {
-            _rightEngine.SetActive(false);
-        }
-    }
+    
 
     public void AddScore(int points)
     {
@@ -321,10 +372,37 @@ public class Player : MonoBehaviour
 
     }
 
-   
-    
+    public void SpawnReinforcements()
+    {
+        Vector3 _reinforcementsSpawnPosition = new Vector3(transform.position.x, transform.position.y, 0f);
+        GameObject reinforcements = Instantiate(_reinforcementsPrefab, _reinforcementsSpawnPosition, Quaternion.identity);
+        //Assign the target to the reinforcements
+       
+
+        reinforcements.transform.parent = transform;
+    }
+
+    public void CameraShake()
+    {
+        _cameraShake.CameraShaking();
+    }
+
+    public void HyperLaserActive()
+    {
+        _isHyperLaserActive = true;
+        StartCoroutine(HyperLaserPowerupRoutine());
+    }
+
+    IEnumerator HyperLaserPowerupRoutine()
+    {
+        yield return new WaitForSeconds(3.0f);
+        _isHyperLaserActive = false;
+    }
 
 
-    
+
+
+
+
 }
 

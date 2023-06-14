@@ -87,7 +87,7 @@ public class Enemy : MonoBehaviour
 
             if (player != null)
             {
-                player.Damage();
+                player.Damage(20);
             }
             _anim.SetTrigger("OnEnemyDeath");
             _speed = 0;
@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour
 
         }
 
-        if (other.tag == "Laser")
+        else if (other.tag == "Laser")
         {
             if (other.transform.GetComponent<Laser>().IsEnemyLaser() == false)
             {
@@ -115,5 +115,23 @@ public class Enemy : MonoBehaviour
                 _alive = false;
             }
         }
+
+        else if (other.tag == "HyperLaser")
+        {
+            Destroy(other.gameObject);
+            if (_player != null)
+            {
+                _player.AddScore(10);
+            }
+            _anim.SetTrigger("OnEnemyDeath");
+            _speed = 0;
+            _audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
+            Destroy(this.gameObject, 2.5f);
+            _alive = false;
+
+
+        }
+       
     }
 }

@@ -53,6 +53,10 @@ public class Powerup : MonoBehaviour
                     case 4:
                     player.AmmoRefill();
                     break;
+                    case 5:
+                    player.HyperLaserActive();
+                    Destroy(gameObject);
+                    break;
                     default:
                     Debug.Log("Default Value");
                     break;

@@ -9,6 +9,7 @@ public class Laser : MonoBehaviour
     private bool _isEnemyLaser = false;
     
     
+    
     void Update()
     {
       if (_isEnemyLaser == false)
@@ -71,9 +72,11 @@ public class Laser : MonoBehaviour
 
             if (player != null)
             {
-                player.Damage();  
+                player.Damage(20);  
             }
+            
         }
+       
     }
 
 }

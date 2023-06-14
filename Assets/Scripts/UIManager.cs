@@ -9,10 +9,10 @@ public class UIManager : MonoBehaviour
     
     [SerializeField]
     private TMP_Text _scoreText;
+   /* [SerializeField]
+   private Image _LivesImg;
     [SerializeField]
-    private Image _LivesImg;
-    [SerializeField]
-    private Sprite[] _liveSprites;
+   private Sprite[] _liveSprites;*/
     [SerializeField]
     private TMP_Text _gameOverText;
     [SerializeField]
@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
     private Slider _speedBoostGauge;
     [SerializeField]
     private Slider _healthGauge;
+    [SerializeField]
+    private HealthBar _healthBar;
     [SerializeField]
     private TMP_Text _ammoDisplay;
     
@@ -46,7 +48,7 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + playerScore.ToString();
     }
 
-    public void UpdateLives(int currentLives)
+   /* public void UpdateLives(int currentLives)
     {
       
         _LivesImg.sprite = _liveSprites[currentLives];
@@ -58,8 +60,11 @@ public class UIManager : MonoBehaviour
 
         }
     }
+   */
 
-    void GameOverSequence()
+        
+
+   public void GameOverSequence()
     {
         _gameManager.GameOver();
         _gameOverText.gameObject.SetActive(true);
@@ -86,13 +91,7 @@ public class UIManager : MonoBehaviour
         _speedBoostGauge.minValue = 0f;
     }
     
-    /*public void HealthGauge (float healthAmount)
-    {
-        _healthGauge.value = healthAmount;
-
-        _healthGauge.maxValue = 100f;
-        _healthGauge.minValue = 0f;
-    }*/
+   
 
    public void UpdateAmmoDisplay(int currentAmmo, int maxAmmo)
     {
