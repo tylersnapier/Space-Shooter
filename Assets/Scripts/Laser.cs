@@ -76,7 +76,15 @@ public class Laser : MonoBehaviour
             }
             
         }
+        if (other.tag == "HyperLaser")
+        {
+            Destroy(gameObject);
+        }
        
     }
+    
+
 
 }
+
+

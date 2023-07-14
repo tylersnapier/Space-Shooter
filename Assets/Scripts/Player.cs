@@ -24,8 +24,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _tripleShotPrefab;
     [SerializeField]
-   private GameObject _hyperLaserPrefab;
-   private Vector3 _hyperLaserOffset = new Vector3(0, 5.25f, 0);
+    private bool _ishyperLaserEnabled = false;
+    [SerializeField]
+    private GameObject _hyperLaserPrefab;
+    private Vector3 _hyperLaserOffset = new Vector3(0, 7f, 0);
     [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
