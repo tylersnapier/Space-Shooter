@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 92b9cc63fb8dafa42b92451216d81ebd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _hyperLaser: {fileID: 2471349473267804203, guid: 7337c859543b55541a896c3308d82f61, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
