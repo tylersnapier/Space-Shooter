@@ -253,7 +253,7 @@ public class Player : MonoBehaviour
             {
                 GameObject _hyperLas = Instantiate(_hyperLaserPrefab, transform.position + _hyperLaserOffset, Quaternion.identity);
                 _hyperLas.transform.parent = transform;
-                Destroy(_hyperLas, 3.0f);
+                Destroy(_hyperLas, 5.0f);
             }
                 
 
