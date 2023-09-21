@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6663440915711989687}
   - component: {fileID: 6663440915711989684}
   - component: {fileID: -7894548137340025239}
+  - component: {fileID: -326506847223248935}
   m_Layer: 0
   m_Name: EnemyPingPong
   m_TagString: Enemy
@@ -234,3 +235,23 @@ MonoBehaviour:
   _random: 0
   _canFireLaser: -1
   _laserPrefab: {fileID: 2623210411920985997, guid: 49d346c3486e95e4e99a7e01020b518a, type: 3}
+  _alive: 1
+--- !u!95 &-326506847223248935
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6663440915711989688}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 061e54426ac7e754dab5a3c438f82efb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
