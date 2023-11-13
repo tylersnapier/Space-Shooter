@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 22cc7c37164475c43bfea54ab6522dd6
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _reinforcementsPrefab: {fileID: 4172441004973972, guid: 6eb4936eb86f87042ad41f0863059f3f, type: 3}
+  - _laserPrefab: {fileID: 8752202980765378555, guid: 7f3474ef455c98b40b593df2bc059690, type: 3}
+  - _tripleShotPrefab: {fileID: 5282818045098341677, guid: e1ebb218c14aaa945ba78433ab3d8aa9, type: 3}
+  - _hyperLaserPrefab: {fileID: 2471349473267804203, guid: 7337c859543b55541a896c3308d82f61, type: 3}
+  - _cameraShake: {instanceID: 0}
+  - _healthBar: {instanceID: 0}
+  - _shieldVisualizer: {fileID: 780098362770255024, guid: f3e3c163dc33ba449847f56ab3bdf916, type: 3}
+  - _thruster: {fileID: 2098984460398715832, guid: f40644018d1da5c4db8e6923b5786903, type: 3}
+  - _speedBoostVisualizer: {instanceID: 0}
+  - _rightEngine: {instanceID: 0}
+  - _leftEngine: {instanceID: 0}
+  - _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
