@@ -135,7 +135,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _random: 0
-  _canFireLaser: -1
+  _canFire: -1
   _laserPrefab: {fileID: 2623210411920985997, guid: 49d346c3486e95e4e99a7e01020b518a, type: 3}
   _alive: 1
 --- !u!95 &-326506847223248935
