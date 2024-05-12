@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Enemy_Flank_Laser : MonoBehaviour
 {
+
+    private float _speed = 3.0f;
+
     // Start is called before the first frame update
     void Start()
     {
