@@ -374,7 +374,7 @@ public class Player : MonoBehaviour
 
     }
 
-    public void SpawnReinforcements()
+   /* public void SpawnReinforcements()
     {
         Vector3 _reinforcementsSpawnPosition = new Vector3(transform.position.x, transform.position.y, 0f);
         GameObject reinforcements = Instantiate(_reinforcementsPrefab, _reinforcementsSpawnPosition, Quaternion.identity);
@@ -382,7 +382,7 @@ public class Player : MonoBehaviour
        
 
         reinforcements.transform.parent = transform;
-    }
+    } */
 
     public void CameraShake()
     {

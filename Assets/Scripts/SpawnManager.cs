@@ -12,6 +12,8 @@ public class SpawnManager : MonoBehaviour
     private GameObject[] _enemyVariant;
     [SerializeField]
     private GameObject[] powerups;
+    [SerializeField] 
+    private GameObject[] debuffs;
 
     private bool _stopSpawning = false;
     
@@ -49,6 +51,19 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(3, 8));
         }
     }
+
+
+
+    /*IEnumerator SpawnDebuffRoutine()
+    {
+        yield return new WaitForSeconds(3.0f);
+        while (_stopSpawning == false)
+        {
+            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            int randomDebuff = Random.Range(0, 1);
+            Instantiate 
+        }
+    }*/
 
     public void OnPlayerDeath()
     {
