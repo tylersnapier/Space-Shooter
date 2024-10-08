@@ -54,16 +54,16 @@ public class SpawnManager : MonoBehaviour
 
 
 
-    /*IEnumerator SpawnDebuffRoutine()
+    IEnumerator SpawnDebuffRoutine()
     {
         yield return new WaitForSeconds(3.0f);
         while (_stopSpawning == false)
         {
-            Vector3 posToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
+            Vector3 postToSpawn = new Vector3(Random.Range(-8f, 8f), 7, 0);
             int randomDebuff = Random.Range(0, 1);
-            Instantiate 
+            Instantiate(debuffs[randomDebuff], postToSpawn, Quaternion.identity); 
         }
-    }*/
+    }
 
     public void OnPlayerDeath()
     {

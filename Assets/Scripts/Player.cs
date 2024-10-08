@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private const float _boostPerSecond = 25f;
     private float _boostPickupAmount = 25f;
     private float _boostToAdd = 0;
+    [SerializeField]
+    private float _speedDebuff = 2;
     //private float _refuelSpeed = 20f;
     [SerializeField]
     private GameObject  _reinforcementsPrefab;
@@ -53,6 +55,9 @@ public class Player : MonoBehaviour
     private bool _isShieldActive = false;
    [SerializeField]
    private bool _isHyperLaserActive = false;
+
+    [SerializeField]
+    private bool _isSpeedDebuffActive = false;
 
     
 
@@ -173,14 +178,7 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(11.3f, transform.position.y, 0);
         }
 
-        //SpeedBoost
-
-        //when the speedpowerup collected store in boost gaurge
-        //boost amount increases by boostPerSecond
-        //when player uses boost decrease by boostPerSecond
-
-        //if boostToAdd > 0 then check against boost left to add
-        //implement to speed boost gauge
+       
         if (_boostToAdd > 0)
         {
             float boostAdded = _boostPerSecond * Time.deltaTime;
@@ -197,7 +195,7 @@ public class Player : MonoBehaviour
             transform.Translate(direction * _speed * _speedMultiplier * Time.deltaTime);
 
            
-            //_isSpeedBoostVisualizerActive = true;
+            
             _speedBoostVisualizer.SetActive(true);
             _thruster.SetActive(false);
             
@@ -211,7 +209,7 @@ public class Player : MonoBehaviour
         {
             transform.Translate(direction * _speed * Time.deltaTime);
 
-            //_isSpeedBoostVisualizerActive = false;
+            
 
            
             _speedBoostVisualizer.SetActive(false);
@@ -220,6 +218,10 @@ public class Player : MonoBehaviour
 
         }
         _uiManager.SpeedBoostGauge(_boostAmount);
+
+        //Speed Decrease Debuff
+        //When debuff is collected, cut speed in half
+        //When _isSpeedDebuffActive = true, set _speed to 1.75f
 
 
     }
@@ -346,6 +348,17 @@ public class Player : MonoBehaviour
         _boostToAdd = Mathf.Clamp(_boostAmount + _boostPickupAmount, 0, 100);
         
     }
+
+    public void SpeedDecrease()
+    {
+        _isSpeedDebuffActive = true;
+    }
+
+    IEnumerator SpeedDebuffCooldown()
+    {
+        yield return new WaitForSeconds(10);
+        _isSpeedDebuffActive = false;
+    }
     
     public void ShieldActive()
     {
@@ -363,7 +376,7 @@ public class Player : MonoBehaviour
         _score += points;
         _uiManager.UpdateScore(_score);
 
-       
+      
     }
 
     public void AmmoRefill()
